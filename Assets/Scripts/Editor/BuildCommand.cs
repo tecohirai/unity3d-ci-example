@@ -190,7 +190,8 @@ static class BuildCommand
                 Debug.Log($"-------------------------------------");
                 Debug.Log($"{step.name}");
                 Debug.Log($"{step.duration}");
-                Debug.Log($"{step.messages}");
+                foreach(var message in step.messages)
+                    Debug.Log($"{message.content}");
             }
 
             throw new Exception($"Build ended with {buildReport.summary.result} status");
