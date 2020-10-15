@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEditor;
 using System.Linq;
 using System;
@@ -181,7 +182,20 @@ static class BuildCommand
         var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
 
         if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
+        {
+            Debug.Log($"TotalError -> {buildReport.summary.totalErrors}");
+
+            foreach (var step in buildReport.steps)
+            {
+                Debug.Log($"-------------------------------------");
+                Debug.Log($"{step.name}");
+                Debug.Log($"{step.duration}");
+                foreach(var message in step.messages)
+                    Debug.Log($"{message.content}");
+            }
+
             throw new Exception($"Build ended with {buildReport.summary.result} status");
+        }
 
         Console.WriteLine(":: Done with build");
     }
